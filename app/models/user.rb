@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
 
   has_many :availabilities, dependent: :destroy
 
+  has_one :suspension, class_name: 'Suspension', dependent: :destroy
+
   geocoded_by :full_address
   after_validation :geocode, if: ->(obj) { obj.full_address.present? }
 
