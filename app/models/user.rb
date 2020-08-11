@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   has_many :authored_reviews, class_name: 'Review', foreign_key: 'author_id', dependent: :destroy
   has_many :received_reviews, class_name: 'Review', foreign_key: 'user_id', dependent: :destroy
 
+  has_many :received_conversations, class_name: 'Conversation', foreign_key: 'recipient_id'
+
   has_many :availabilities, dependent: :destroy
 
   has_one :suspension, class_name: 'Suspension', dependent: :destroy
@@ -52,7 +54,7 @@ class User < ActiveRecord::Base
   scope :admins, -> { includes(:roles).where(roles: { url_slug: 'admin' }) }
   scope :with_availabilities, -> { includes(:availabilities).where.not(availabilities: { id: nil }) }
 
-  scope :active, -> { where(active: true) }
+  scope :active, -> { joins(' FULL OUTER JOIN "suspensions" ON "suspensions"."user_id" = "users"."id" ').where('"suspensions"."timed_out" IS NOT true').where(active: true)}
 
   def self.authentication_keys
     [:email]
@@ -72,6 +74,10 @@ class User < ActiveRecord::Base
 
   def client?
     roles.where(url_slug: 'client').present?
+  end
+
+  def can_unsuspend?
+    self.received_conversations.none?{|convo| convo.updated_at === convo.created_at }
   end
 
   def remember_me

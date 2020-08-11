@@ -29,7 +29,8 @@ class UserDecorator
       :timezone => user_timezone,
       :url_slug => url_slug,
       :volunteer => @user.volunteer?,
-      :city => city
+      :city => city,
+      :can_unsuspend => @user.can_unsuspend?
     }.merge(availabilities_hash)
   end
 
