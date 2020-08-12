@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl';
 
 import AvailabilitiesTable from './AvailabilitiesTable';
 import formatLink from './utils/Link';
+import { getData, postData } from './utils/sendData';
 
 import PageHeader from './reusable/PageHeader';
 import { ENGLISH } from './utils/availableLocales';
@@ -42,6 +43,21 @@ class AvailabilityIndexPage extends Component {
         </Paper>
       </div>
     );
+  }
+
+  createSuspension() {
+    const { currentUser: { id, locale } } = this.props;
+    let url = locale + '/suspensions';
+    let params = '';
+    let attributes = [['user_id', id]];
+    let method = 'POST';
+    let successCallBack = () => { };
+    let errorCallBack = ()=>{};
+    postData(url, params, attributes, method, successCallBack, errorCallBack) 
+  }
+
+  destroySuspension() {
+
   }
 
   renderAvailablePrograms() {
@@ -96,7 +112,8 @@ AvailabilityIndexPage.propTypes = {
     timezone: PropTypes.string,
     locale: PropTypes.string,
     can_unsuspend: PropTypes.bool,
-    suspended: PropTypes.bool
+    suspended: PropTypes.bool,
+    id: PropTypes.number 
   }),
 };
 
@@ -109,7 +126,8 @@ AvailabilityIndexPage.defaultProps = {
     timezone: '',
     locale: ENGLISH,
     can_unsuspend: false,
-    suspended: false
+    suspended: false,
+    id: 0
   }
 };
 
