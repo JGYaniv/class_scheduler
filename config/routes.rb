@@ -19,8 +19,9 @@ Rails.application.routes.draw do
     resources :reviews, only: %i[create update destroy]
     resources :sessions
     resource :users do
-      get 'cities', on: :collection
+      get 'cities', on: :collection  
     end
+    resources :suspensions, only: %i[create destroy]
 
     get 'reviews', to: 'reviews#index'
 

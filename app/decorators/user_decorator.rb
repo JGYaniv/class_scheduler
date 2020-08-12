@@ -30,7 +30,8 @@ class UserDecorator
       :url_slug => url_slug,
       :volunteer => @user.volunteer?,
       :city => city,
-      :can_unsuspend => @user.can_unsuspend?
+      :can_unsuspend => @user.can_unsuspend?,
+      :suspended => @user.suspended?,
     }.merge(availabilities_hash)
   end
 

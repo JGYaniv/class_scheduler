@@ -30,7 +30,9 @@ class AvailabilityIndexPage extends Component {
               id='AvailabilityIndexPage.Help'
               defaultMessage='I can help with'
             />:
-            <button type="button" disabled={ this.props.currentUser.can_unsuspend ? false : true }>Pause Account</button>
+            <button type="button" disabled={ this.props.currentUser.can_unsuspend ? false : true }>
+              {this.props.currentUser.suspended ? 'Resume Account' : 'Pause Account'}
+            </button>
             <ul className='availabilityIndexProgramsContainer'>
               { this.renderAvailablePrograms() }
             </ul>
@@ -93,7 +95,8 @@ AvailabilityIndexPage.propTypes = {
     email: PropTypes.string,
     timezone: PropTypes.string,
     locale: PropTypes.string,
-    can_unsuspend: PropTypes.bool
+    can_unsuspend: PropTypes.bool,
+    suspended: PropTypes.bool
   }),
 };
 
@@ -105,7 +108,8 @@ AvailabilityIndexPage.defaultProps = {
     email: '',
     timezone: '',
     locale: ENGLISH,
-    can_unsuspend: false
+    can_unsuspend: false,
+    suspended: false
   }
 };
 

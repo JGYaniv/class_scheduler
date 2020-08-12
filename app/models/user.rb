@@ -77,7 +77,15 @@ class User < ActiveRecord::Base
   end
 
   def can_unsuspend?
-    self.received_conversations.none?{|convo| convo.updated_at === convo.created_at }
+    self.received_conversations.includes(:messages).all? do |convo| 
+      time_difference = (Time.now - convo.created_at)/3600
+      has_responded = convo.messages.any?{|msg| msg.user_id == self.id}
+      has_responded || time_difference < 48
+    end
+  end
+
+  def suspended?
+    !!self.suspension && !!self.suspension.timed_out
   end
 
   def remember_me
