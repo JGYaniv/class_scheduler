@@ -53,7 +53,7 @@ gem 'active_model_serializers', '~> 0.10.0'
 
 group :development, :test do
 	gem 'factory_bot_rails', '~> 4.8'
-
+  gem 'dotenv-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 11.0', platforms: [:mri, :mingw, :x64_mingw], require: false
   # Adds support for Capybara system testing and selenium driver
@@ -64,8 +64,8 @@ group :development, :test do
   gem 'awesome_print', '~> 1.8'
 
   # Add support for debugging in VSCode
-  gem 'ruby-debug-ide', '0.7.2'
-  gem 'debase', '0.2.4.1'
+  # gem 'ruby-debug-ide', '0.7.2'
+  # gem 'debase', '0.2.4.1'
 end
 
 group :development do

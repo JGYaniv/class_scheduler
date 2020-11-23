@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:10.3-alpine'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+    env_file:
+      - '.env'
+
+  # webpack-dev-server:
+  #   build: .
+  #   env_file:
+  #     - '.env'
+  #   # so things like pry work
+  #   tty: true
+  #   volumes:
+  #     # bind-mount your working directory of code
+  #     - .:/app
+  #     # attach a volume at /bundle to cache gems
+  #     - bundle:/bundle
+  #     # attach a volume at ./node_modules to cache node modules
+  #     - node-modules:/app/node_modules
+  #     # attach a volume at ./tmp to cache asset compilation files
+  #     - tmp:/app/tmp
+  #   command:
+  #     - -c
+  #     - /usr/local/bin/ruby /app/bin/webpack-dev-server
+  #   ports:
+  #     - 3035:3035
+
+  website:
+    depends_on:
+      - 'postgres'
+      # - 'webpack-dev-server'
+    build: .
+    env_file:
+      - '.env'
+    # so things like pry work
+    tty: true
+    volumes:
+      # bind-mount your working directory of code
+      - .:/app
+      # attach a volume at /bundle to cache gems
+      - bundle:/bundle
+      # attach a volume at ./node_modules to cache node modules
+      - node-modules:/app/node_modules
+      # attach a volume at ./tmp to cache asset compilation files
+      - tmp:/app/tmp
+    ports:
+      - '5000:5000'
+      - '5001:5001'
+      - '3000:3000'
+
+volumes:
+  postgres:
+  bundle:
+  tmp:
+  node-modules:
